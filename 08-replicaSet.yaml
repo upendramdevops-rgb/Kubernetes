@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myrs
+  labels:
+    env: dev
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: swiggy
+  template:
+    metadata:
+      labels:
+        app: swiggy
+    spec:
+      containers:
+        - name: c1
+          image: nginx
+          ports:
+            - containerPort: 80
+
+
+#kubectl apply -f your-file.yaml --dry-run=client  ------- find error intial berfor apply create pod.
+#kubectl applly -f replicaset.yaml    ---------------- it will create and modify the resource.
+kubectl create -f replicaset.yaml     ----------------- it will only create a resource.
+
+
+/* Whenever you write Kubernetes YAML, you can quickly check if it's valid before applying it by using the --dry-run flag:
+
+bash
+# kubectl apply -f your-file.yaml --dry-run=client
+If there are syntax errors, it will instantly tell you exactly which line is broken. If it's correct, it will say replicaset.apps/myrs created (dry run). */
