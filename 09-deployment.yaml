@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployment
+  labels:
+    env: dev
+  annotations: 
+    kubernetes.io/change-cause: "new-image update by upendrs"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: swiggy
+  template:
+    metadata:
+      labels:
+        app: swiggy
+    spec:
+      containers:
+        - name: c1
+          image: nginx
+          ports:
+            - containerPort: 80
+
+
+#scalein/out, update image/delete image therough commands.
+
+#kubectl scale deployment <deployment-name> --replicas=4    ----------------- it will increase the pods
+#kubectl scale deployment <deployment-name> --replicas=2    ----------------- it will decrease the pods
+
+#kubectl set image deployment <deployment-name> cont-name=<image-name>  --------- it will update the image
+
+#kubectl rollout history deployment <deployment-name>  ------------------------- it will all deployement under that specific deployment
+
+#kubectl rollout undo deployment <deployment-name> --to-revision=2   -------------- we will rollback second version of deployment.
+#kubectl rollout undo deployment <deployment-name>   -------------------------------it will rollout previous version.
+
+#kubectl annotate deployment <deployment-name> kubernetes.io/change-cause="rollback to the second version" --overwite
+                                              ----------------------------------------- it use for write adescription 
