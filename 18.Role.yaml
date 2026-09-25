@@ -7,3 +7,7 @@ rules:
   - apiGroups: [""]
     resources: ["pods"]
     verbs: ["get", "watch", "list", "create", "delete"]
+
+
+
+#kubectl auth cani delete pods -n <namesapce>
