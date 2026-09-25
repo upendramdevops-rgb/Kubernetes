@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Statefulset
+metadata:
+  name: mystatefulset
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: swiggy
+  template:
+    metadata:
+      labels:
+        app: swiggy
+    spec:
+      containers:
+        - name: c1
+          image: mysql
+          ports:
+            - containerPort: 3306
