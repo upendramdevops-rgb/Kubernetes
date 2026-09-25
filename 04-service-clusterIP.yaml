@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: myservice
 spec:
-  type: clusterIP
+  type: ClusterIP
   selector:
      app: swiggy
   ports:
