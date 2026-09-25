@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ComfigMap
+metadata:
+  name: mycm
+data:
+  DB_PORT: "3306"
+  DB_HOST: "devopsdb"
+  ENV: "prod"
+
+
+
+  #kubectl get cm
+  #kubectl create cm <name-of config> --from-literal=env=dev  --from-literal=env=db_port=3306  --from-literal=app=swiggy
+
+  #app.env
+  env=test
+  app_port=5000
+  client=tcs
+  app=uber
+
+  #kubectl create cm <cmname> --from-env-file=app.env
