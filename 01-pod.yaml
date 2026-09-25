@@ -8,3 +8,6 @@ spec:
       image: nginx
       ports:
         - containerPort: 80
+
+#kubectl create -f pod.yaml  -----it create a pod with requirements
+#kubectl get po ------------------it list the pods
