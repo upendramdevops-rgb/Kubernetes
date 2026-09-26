@@ -34,3 +34,6 @@ spec:
       targetPort: 80
 
   type: LoadBalancer
+
+
+  #in realtime we maintain a two deployment environments but one service, when we update a newversion - in servce just change a labels. 
