@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+spec:
+  tolerations:
+    - key: "app"
+      operator: "Equal"
+      value: "db"
+      effect: "NoSchedule"
+  containers:
+    - name: c1
+      image: httpd
+      ports:
+        - containerPort: 80
+
+
+
+#kubectl create -f mypod.yaml
+#kubectl get po -o wide
+#kubectl taint node node-name app=db:NoSchedule     --------- here apply a taint to node.
+
+#three types of effects 1.NoSchedule, 2.preffer NoSchedule, 3.NoExecute
+#taint means ignore/prevent the pods unless pod have matching tolerance.
