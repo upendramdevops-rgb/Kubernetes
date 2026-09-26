@@ -2,9 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata: 
   name: mydeployment
-  labels:
-    app: demo-app
-    env: blue
 spec:
   replicas: 4
   selector:
@@ -31,6 +28,7 @@ metadata:
 spec:
   selector:
     app: demo-app
+    env: blue
   ports:
     - port: 80
       targetPort: 80
