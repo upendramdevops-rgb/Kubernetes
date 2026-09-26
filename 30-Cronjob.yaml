@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: demo-job
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - image: httpd
+              name: c1
+              command: ["/bin/bash", "-c", "apt-get update -y; sleep 20"]
+          restartPolicy: Never
+
+
+#kubectl create -f cronjob.yaml
+#kubectl get cj
+#kubectl get po -w   ------------------ you can watch pods lively.
