@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: mydeployment
+  labels:
+    app: demo-app
+    env: blue
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: demo-app
+      env: blue
+  template:
+    metadata:
+      labels:
+        app: demo-app
+        env: blue
+    spec:
+      containers:
+        - image: httpd
+          name: c1
+          ports:
+            - containerPort: 80
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-appservice
+spec:
+  selector:
+    app: demo-app
+  ports:
+    - port: 80
+      targetPort: 80
+
+  type: LoadBalancer
