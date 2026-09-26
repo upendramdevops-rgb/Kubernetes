@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx
+                port:
+                  number: 80
+          - path: /http
+            pathType: Prefix
+            backend:
+              service:
+                name: http
+                port:
+                  number: 80
+          - path: /nginx
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx
+                port:
+                  number: 80
+
+#kubectl get ingress --------------list the ingress
+#kubectl apply -f ingress.yaml --------- create a ingress
+#kubectl delete ingress <ingress-name> ----- delete a ingress
+#kubectl describe ingress <ingress-name> ---- describe a ingress
+
+#what is a ingress?
+#ans: In kubernets, ingress handles external http/https traffic, it works on layer7 application layer. 
+      #It routes a traffic from outside the cluster to inside cluster services, based on host names/ urlpath based.
+      #It expose a multiple services with single entrypoint.
+      #Hostnames (e.g., api.myapp.com vs shop.myapp.com)
+      #URL Paths (e.g., /api vs /images)
+
+     # "In Kubernetes, Ingress handles external HTTP/HTTPS traffic. It works at the Layer 7 (Application Layer). 
+     # It routes traffic from outside the cluster to internal cluster services based on hostnames and URL paths.
+    # It exposes multiple services with a single entry point."
