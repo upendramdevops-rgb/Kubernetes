@@ -19,3 +19,8 @@ spec:
       image: httpd
       ports:
         - containerPort: 80
+
+
+#requiredDuringSchedulingIgnoredDuringExecution ------------- if nodelabel match its schedule the pod otherwise pode will went pending.
+#requiredDuringSchedulingIgnoredDuringExecution --------------It will gave a first preference to schedule the pod match node-label, 
+                                                              if node label is not availble schedule a pod anothe node.
