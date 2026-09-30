@@ -1,0 +1,88 @@
+pipeline {
+    agent any
+    tools {
+        maven "mymaven"
+    }
+    stages {
+        stage("cleanws") {
+            steps {
+                cleanWs()
+            }
+        }
+        stage("check-out") {
+            steps {
+                git "https://github.com/upendramdevops-rgb/dockerwebapp.git"
+            }
+        }
+        stage("cqa") {
+            steps {
+                withSonarQubeEnv('mysonar') {
+                     sh "mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar -Dsonar.projectKey=myproject"
+                 }
+            }
+        }
+        stage("QG") {
+            steps {
+                waitForQualityGate abortPipeline:true, credentialsId: 'mysonar'
+            }
+        }
+        stage("code-build") {
+            steps {
+                sh "mvn clean package"
+            }
+        }
+        stage("image-build") {
+            steps {
+                sh "docker build -t upendra9010/p2:db-image Docker-db/"
+                sh "cp -r target Docker-app/"
+                sh "docker build -t upendra9010/p2:app-image Docker-app/"
+                
+            }
+        }
+        stage("image-scan") {
+            steps {
+                sh "trivy image upendra9010/p2:db-image"
+                sh "trivy image upendra9010/p2:app-image"
+            }
+        }
+        stage("image-push") {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'registry') {
+                     sh "docker push upendra9010/p2:db-image"
+                     sh "docker push upendra9010/p2:app-image"
+                   }
+                }
+            }
+        }
+        stage("update-image") {
+            steps {
+                sh '''
+                      sed -i 's|build: .*|build: upendra9010/p2:db-image|g' manifests/db-deployment.yaml
+                      sed -i 's|build: .*|build: upendra9010/p2:app-image|g' manifests/app-deployment.yaml
+                      
+                   '''
+            }
+        }
+    }
+
+
+
+#cd ppline
+pipeline {
+    agent any
+    stages {
+        stage("code") {
+            steps {
+                git "https://github.com/upendramdevops-rgb/dockerwebapp.git"
+            }
+        }
+       stage("deploy") {
+           steps {
+               withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'my-eks-cluster', contextName: '', credentialsId: 'kubernetes', namespace: 'webapps', serverUrl: 'https://F9E51B7B15FAE68E87E1149E259CFB1C.gr7.us-east-1.eks.amazonaws.com']]) {
+               sh "kubectl apply -f manifests"
+               }         
+           }
+       }
+    }
+}
