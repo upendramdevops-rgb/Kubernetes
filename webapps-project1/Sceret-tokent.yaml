@@ -5,3 +5,7 @@ metadata:
   name: mysecretname
   annotations:
     kubernetes.io/service-account.name: jenkins
+
+
+#kubectl apply -f secret-token.yaml -n webapps
+#kubectl describe secret mysecretname -n weapps
