@@ -1,0 +1,59 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("cleanws") {
+            steps {
+                cleanWs()
+            }
+        }
+
+        stage("checkout") {
+            steps {
+                git "https://github.com/upendra9010/ltibbhackathon-JD-pr-3-.git"
+            }
+        }
+
+        stage("cqa") {
+            environment {
+                ScannerHome = tool "mysonar"
+            }
+            steps {
+                withSonarQubeEnv("mysonar") {
+                    sh "${ScannerHome}/bin/sonar-scanner -DprojectKey=myproject"
+                }
+            }
+        }
+
+        stage("QG") {
+            steps {
+                waitForQualityGate abortPipeline: true, credentialsId: "sonar"
+            }
+        }
+
+        stage("build-image") {
+            steps {
+                sh "docker build -t upendra9010/p2:app-image ."
+                sh "docker build -t upendra9010/p2:db-image database/"
+            }
+        }
+
+        stage("image-scan") {
+            steps {
+                sh "trivy image upendra9010/p2:app-image"
+                sh "trivy image upendra9010/p2:db-image"
+            }
+        }
+
+        stage("push-image") {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'dockerhub') {
+                        sh "docker push upendra9010/p2:app-image"
+                        sh "docker push upendra9010/p2:db-image"
+                    }
+                }
+            }
+        }
+    }
+}
