@@ -6,7 +6,7 @@ metadata:
 spec:
   ClusterIP : none
   selector:
-    app: db-database
+    app: app-database
   ports:
     - port: 3306
       targetPort: 33006
