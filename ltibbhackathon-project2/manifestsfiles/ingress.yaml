@@ -16,3 +16,6 @@ spec:
                 name: appservice
                 port:
                   number: 80
+
+
+# need to install ingress controller
