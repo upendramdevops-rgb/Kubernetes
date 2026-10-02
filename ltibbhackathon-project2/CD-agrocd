@@ -1,0 +1,29 @@
+# 1. install argocd in server
+# 2. Patch loadbalancer for bans name
+# 3. get a passowrd using passowrd command
+# 4. List the pods
+#
+
+# how to configure argocd to git manifests folder
+# 1. go to dash board create a new dash bord for application
+# 2. gave name dashboard and project name will be default
+# 3. gave repository url(manifest forlder)
+# 4. gave branchname
+# 5. directory
+# 6. cluster url
+# 7.default namespace/ ur namespace
+# 8. click synchronize.
+
+# In terminal 
+# list the ingress(kubectl get ing)
+# copy dnsname and acesss the appliction.
+
+
+# switch into database pod(kubectl exec -it podname -o --bash]
+# login into db (mysql -u root -p)
+# enter password -------
+# it show database list
+# list databases(show databases;)
+# use/acess database(use database-name;)
+# list the tabels(show tables;)
+# fetch the data from table (select * from user)
